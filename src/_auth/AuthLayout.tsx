@@ -2,10 +2,10 @@ import React from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 
 const AuthLayout = () => {
-  const isAunthenticated = false;
+  const isAuthenticated = false;
   return (
     <>
-    {isAunthenticated ? (
+    {isAuthenticated ? (
       <Navigate to="/" />
       ) : (
         <> 
