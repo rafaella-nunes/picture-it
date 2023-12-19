@@ -2,7 +2,8 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from 'react-hook-form';
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
+import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button';
 import { SingUpValidation } from "@/lib/validation";
@@ -12,6 +13,7 @@ import { createUserAccount } from "@/lib/appwrite/api";
 
 
 const SignUpForm = () => {
+  const { toast } = useToast();
   const isLoading = false;
 
    // 1. Define form.
@@ -28,7 +30,12 @@ const SignUpForm = () => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SingUpValidation>) {
     const newUser = await createUserAccount(values);
-    console.log(newUser);
+    
+    if(!newUser) {
+      return toast({ title: "Sing up failed. Please try again." });
+    }
+
+    //const session = await signInAccount()
   }
 
   return (
