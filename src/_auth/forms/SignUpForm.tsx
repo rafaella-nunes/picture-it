@@ -9,12 +9,14 @@ import { Button } from '@/components/ui/button';
 import { SingUpValidation } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
 import { Link } from "react-router-dom";
-import { createUserAccount } from "@/lib/appwrite/api";
+import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesAndMutations";
 
 
 const SignUpForm = () => {
   const { toast } = useToast();
-  const isLoading = false;
+
+  const { mutateAsync: createUserAccount, isLoading: isCreatingUser} = useCreateUserAccount();
+  const { mutateAsync: signInAccount, isLoading: isSigningIn} = useSignInAccount();
 
    // 1. Define form.
    const form = useForm<z.infer<typeof SingUpValidation>>({
@@ -26,6 +28,7 @@ const SignUpForm = () => {
       password: "",
     },
   })
+
  
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SingUpValidation>) {
@@ -35,7 +38,16 @@ const SignUpForm = () => {
       return toast({ title: "Sing up failed. Please try again." });
     }
 
-    //const session = await signInAccount()
+    const session = await signInAccount({
+      email: values.email,
+      password: values.password,
+    })
+
+    if(!session){
+      return toast({ title: "Sing in failed. Please try again." }); 
+    }
+
+    
   }
 
   return (
@@ -95,7 +107,7 @@ const SignUpForm = () => {
 
         <Button type="submit" className="shad-button_primary">
           
-          {isLoading ? (
+          {isCreatingUser ? (
             <div className="flex-center gap-2">
               <Loader />
             </div>
