@@ -1,17 +1,29 @@
 import GridPostList from '@/components/shared/GridPostList';
+import Loader from '@/components/shared/Loader';
 import SearchResults from '@/components/shared/SearchResults';
 import { Input } from '@/components/ui/input';
-import { useSearchPosts } from '@/lib/react-query/queriesAndMutations';
+import useDebounce from '@/hooks/useDebounce';
+import { useGetPosts, useSearchPosts } from '@/lib/react-query/queriesAndMutations';
 import { useState } from 'react';
 
 const Explore = () => {
+  const { data: posts, fetchNextPage, hasNextPage } = useGetPosts();
+
   const [searchValue, setSearchValue] = useState('');
-  const { data: searchedPosts, isFetching: isSearchFetching } = useSearchPosts(searchValue)
+  const debouncedValue = useDebounce(searchValue, 500);
+  const { data: searchedPosts, isFetching: isSearchFetching } = useSearchPosts(debouncedValue);
 
-  //const posts = [];
+  console.log(posts);
+  if(!posts){
+    return(
+      <div className='flex-center w-full h-full'>
+        <Loader />
+      </div>
+    )
+  }
 
-  //const shouldShowSearchResults = searchValue !== '';
-  //const shouldShowPosts = !shouldShowSearchResults && posts.pages.every((item) => item.documents.length === 0)
+  const shouldShowSearchResults = searchValue !== '';
+  const shouldShowPosts = !shouldShowSearchResults && posts.pages.every((item) => item.documents.length === 0)
 
   return (
     <div className='explore-container'>
@@ -45,15 +57,15 @@ const Explore = () => {
         </div>
       </div>
 
-      {/*<div className='flex flex-wrap gap-9 w-full max-w-5xl'>
+      <div className='flex flex-wrap gap-9 w-full max-w-5xl'>
         {shouldShowSearchResults ? (
           <SearchResults />
         ) : shouldShowPosts ? (
           <p className='text-light-4 mt-10 text-center w-full'>End of posts.</p>
         ) : posts.pages.map((item, index) => (
-          <GridPostList key={`page-${index}`} posts={items.documents}/>
+          <GridPostList key={`page-${index}`} posts={item.documents}/>
         ))}
-        </div>*/}
+        </div>
     </div>
   )
 }
