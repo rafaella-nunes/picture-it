@@ -1,10 +1,12 @@
 import GridPostList from '@/components/shared/GridPostList';
 import SearchResults from '@/components/shared/SearchResults';
-import { Input } from '@/components/ui/input'
-import { useState } from 'react'
+import { Input } from '@/components/ui/input';
+import { useSearchPosts } from '@/lib/react-query/queriesAndMutations';
+import { useState } from 'react';
 
 const Explore = () => {
   const [searchValue, setSearchValue] = useState('');
+  const { data: searchedPosts, isFetching: isSearchFetching } = useSearchPosts(searchValue)
 
   //const posts = [];
 
