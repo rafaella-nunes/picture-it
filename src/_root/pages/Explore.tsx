@@ -17,7 +17,7 @@ const Explore = () => {
 
   useEffect(() => {
     if(inView && !searchValue) fetchNextPage();
-  }, [inView, searchValue])
+  }, [fetchNextPage, inView, searchValue])
 
   console.log(posts);
   if(!posts){
@@ -29,7 +29,7 @@ const Explore = () => {
   }
 
   const shouldShowSearchResults = searchValue !== '';
-  const shouldShowPosts = !shouldShowSearchResults && posts.pages.every((item) => item.documents.length === 0)
+  const shouldShowPosts = !shouldShowSearchResults && posts.pages.every((item) => item?.documents.length === 0)
 
   return (
     <div className='explore-container'>

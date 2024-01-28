@@ -1,7 +1,7 @@
 import GridPostList from "@/components/shared/GridPostList";
 import Loader from "@/components/shared/Loader";
 import { Button } from "@/components/ui/button";
-import { useUserContext } from "@/context/authContext";
+import { useUserContext } from "@/context/AuthContext";
 import { useGetUserById } from "@/lib/react-query/queriesAndMutations";
 import { Route, Routes, Link, Outlet, useParams, useLocation } from "react-router-dom";
 import { LikedPosts } from ".";

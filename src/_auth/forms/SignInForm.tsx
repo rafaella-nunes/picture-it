@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { SingInValidation } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
 import { useSignInAccount } from "@/lib/react-query/queriesAndMutations";
-import { useUserContext } from "@/context/authContext";
+import { useUserContext } from "@/context/AuthContext";
 
 
 const SignInForm = () => {
