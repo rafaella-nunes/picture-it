@@ -366,12 +366,12 @@ export async function createPost(post: INewPost) {
     }
   }
 
-  export async function getUsers() {
+  export async function getUsers(limit: number) {
     try {
       const users = await databases.listDocuments(
         appwriteConfig.databaseId,
         appwriteConfig.userCollectionId,
-        [Query.orderDesc("$createdAt"), Query.limit(10)],
+        [Query.orderDesc("$createdAt"), Query.limit(limit)],
       )
       if(!users) throw Error;
       
